@@ -38,3 +38,38 @@
     font-size: 1rem;
 
 }
+
+.todo-container {
+    display: flex;
+    justify-content: center;
+}
+
+.todolist {
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    width: 25%;
+
+
+
+}
+
+.addtodo {
+    border: 1px dashed black;
+    margin-top: 1rem;
+    padding: 1rem;
+    display: flex;
+    gap: 10px;
+
+}
+
+.dlt-container {
+    display: flex;
+    align-items: center;
+    gap: 11rem;
+
+}
+
+.title {
+
+    width: 8rem;
+}

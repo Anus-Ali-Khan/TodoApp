@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../components/Addtodo.css";
 
 const Addtodo = ({ handleClick }) => {
-  const [items, setItems] = useState("");
+  const [text, setText] = useState("");
 
   return (
     <div className="App">
@@ -13,10 +13,10 @@ const Addtodo = ({ handleClick }) => {
         type="text"
         placeholder="Add Todo..."
         className="input"
-        value={items}
-        onChange={(e) => setItems(e.target.value)}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       />
-      <button className="btn" onClick={() => handleClick(items)}>
+      <button className="btn" onClick={() => handleClick(text)}>
         Add Todo
       </button>
     </div>

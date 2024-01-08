@@ -8,10 +8,32 @@ function App() {
 
   const handleClick = (item) => {
     if (item.length < 12) {
-      setTodos([{ title: item, key: Math.random().toString() }, ...todos]);
+      const newTodo = {
+        title: item,
+        key: Math.random().toString(),
+        isCompleted: false,
+      };
+      localStorage.setItem("todos", JSON.stringify([...todos, newTodo]));
+      setTodos([newTodo, ...todos]);
     } else {
       alert("Enter text upto 12 chars");
     }
+  };
+
+  const handleTick = (key) => {
+    const updatedTodoList = todos.map((todo) => {
+      if (todo.key === key) {
+        return {
+          ...todo,
+          isCompleted: !todo.isCompleted,
+        };
+      } else {
+        return todo;
+      }
+    });
+
+    setTodos(updatedTodoList);
+    localStorage.setItem("todos", JSON.stringify([updatedTodoList]));
   };
 
   const handleDelete = (key) => {
@@ -20,17 +42,20 @@ function App() {
         return todo.key !== key;
       })
     );
+    localStorage.setItem("todos", JSON.stringify([...todos]));
   };
+
+  const todolist = JSON.parse(localStorage.getItem("todos"));
 
   return (
     <>
       <Addtodo handleClick={handleClick} />
       <div className="todo-container">
         <div className="todolist">
-          {todos.map((todo) => {
+          {todolist.map((todo) => {
             return (
               <div className="addtodo">
-                <input type="checkbox" />
+                <input type="checkbox" onClick={() => handleTick(todo.key)} />
                 <div className="dlt-container">
                   <div className="title"> {todo.title}</div>
 

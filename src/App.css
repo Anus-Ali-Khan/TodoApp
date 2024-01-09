@@ -62,8 +62,13 @@
 .dlt-container {
     display: flex;
     align-items: center;
-    gap: 11rem;
+    gap: 9rem;
 
+}
+
+.icons {
+    display: flex;
+    gap: 1rem;
 }
 
 .title {

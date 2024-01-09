@@ -1,7 +1,8 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Addtodo from "./components/Addtodo";
 import { MdDeleteOutline } from "react-icons/md";
+import { MdOutlineEdit } from "react-icons/md";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -20,7 +21,7 @@ function App() {
     }
   };
 
-  const handleTick = (key) => {
+  const handleCheck = (key) => {
     const updatedTodoList = todos.map((todo) => {
       if (todo.key === key) {
         return {
@@ -32,8 +33,23 @@ function App() {
       }
     });
 
+    localStorage.setItem("todos", JSON.stringify(updatedTodoList));
     setTodos(updatedTodoList);
-    localStorage.setItem("todos", JSON.stringify([updatedTodoList]));
+  };
+
+  const handleEdit = (key) => {
+    const editList = todos.map((todo) => {
+      if (todo.key === key) {
+        return {
+          ...todo,
+          title: <input />,
+        };
+      } else {
+        return todo;
+      }
+    });
+
+    setTodos(editList);
   };
 
   const handleDelete = (key) => {
@@ -45,21 +61,26 @@ function App() {
     localStorage.setItem("todos", JSON.stringify([...todos]));
   };
 
-  const todolist = JSON.parse(localStorage.getItem("todos"));
+  useEffect(() => {
+    const todoList = JSON.parse(localStorage.getItem("todos"));
+    setTodos(todoList);
+  }, []);
 
   return (
     <>
       <Addtodo handleClick={handleClick} />
       <div className="todo-container">
         <div className="todolist">
-          {todolist.map((todo) => {
+          {todos.map((todo) => {
             return (
               <div className="addtodo">
-                <input type="checkbox" onClick={() => handleTick(todo.key)} />
+                <input type="checkbox" onClick={() => handleCheck(todo.key)} />
                 <div className="dlt-container">
                   <div className="title"> {todo.title}</div>
-
-                  <MdDeleteOutline onClick={() => handleDelete(todo.key)} />
+                  <div className="icons">
+                    <MdOutlineEdit onClick={() => handleEdit(todo.key)} />
+                    <MdDeleteOutline onClick={() => handleDelete(todo.key)} />
+                  </div>
                 </div>
               </div>
             );

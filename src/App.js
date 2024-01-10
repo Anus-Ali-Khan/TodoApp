@@ -3,9 +3,12 @@ import { useState, useEffect } from "react";
 import Addtodo from "./components/Addtodo";
 import { MdDeleteOutline } from "react-icons/md";
 import { MdOutlineEdit } from "react-icons/md";
+import { FaCheck } from "react-icons/fa6";
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [selected, setSelected] = useState("");
+  const [editTitle, setEditTitle] = useState("");
 
   const handleClick = (item) => {
     if (item.length < 12) {
@@ -38,32 +41,38 @@ function App() {
   };
 
   const handleEdit = (key) => {
-    const editList = todos.map((todo) => {
+    setSelected(key);
+  };
+
+  const handleDelete = (key) => {
+    const deleteList = todos.filter((todo) => {
+      return todo.key !== key;
+    });
+
+    setTodos(deleteList);
+    localStorage.setItem("todos", JSON.stringify(deleteList));
+  };
+
+  const handleDoneEdit = (key) => {
+    const doneEdit = todos.map((todo) => {
       if (todo.key === key) {
         return {
           ...todo,
-          title: <input />,
+          title: editTitle,
         };
       } else {
         return todo;
       }
     });
-
-    setTodos(editList);
-  };
-
-  const handleDelete = (key) => {
-    setTodos(
-      todos.filter((todo) => {
-        return todo.key !== key;
-      })
-    );
-    localStorage.setItem("todos", JSON.stringify([...todos]));
+    setTodos(doneEdit);
+    localStorage.setItem("todos", JSON.stringify(todos));
   };
 
   useEffect(() => {
     const todoList = JSON.parse(localStorage.getItem("todos"));
-    setTodos(todoList);
+    if (todoList) {
+      setTodos(todoList);
+    }
   }, []);
 
   return (
@@ -74,11 +83,28 @@ function App() {
           {todos.map((todo) => {
             return (
               <div className="addtodo">
-                <input type="checkbox" onClick={() => handleCheck(todo.key)} />
+                <input
+                  type="checkbox"
+                  checked={todo.isCompleted}
+                  onClick={() => handleCheck(todo.key)}
+                />
                 <div className="dlt-container">
-                  <div className="title"> {todo.title}</div>
+                  {selected === todo.key ? (
+                    <input
+                      value={todos.title}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                    />
+                  ) : (
+                    <div className="title">{todo.title}</div>
+                  )}
+
                   <div className="icons">
-                    <MdOutlineEdit onClick={() => handleEdit(todo.key)} />
+                    {selected === todo.key ? (
+                      <FaCheck onClick={handleDoneEdit} />
+                    ) : (
+                      <MdOutlineEdit onClick={() => handleEdit(todo.key)} />
+                    )}
+
                     <MdDeleteOutline onClick={() => handleDelete(todo.key)} />
                   </div>
                 </div>

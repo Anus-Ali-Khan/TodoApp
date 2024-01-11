@@ -42,6 +42,11 @@ function App() {
 
   const handleEdit = (key) => {
     setSelected(key);
+
+    const prevtitle = todos.find((todo) => {
+      return todo.key === key;
+    });
+    setEditTitle(prevtitle.title);
   };
 
   const handleDelete = (key) => {
@@ -64,8 +69,10 @@ function App() {
         return todo;
       }
     });
+
     setTodos(doneEdit);
-    localStorage.setItem("todos", JSON.stringify(todos));
+    localStorage.setItem("todos", JSON.stringify(doneEdit));
+    setSelected("");
   };
 
   useEffect(() => {
@@ -89,18 +96,20 @@ function App() {
                   onClick={() => handleCheck(todo.key)}
                 />
                 <div className="dlt-container">
-                  {selected === todo.key ? (
-                    <input
-                      value={todos.title}
-                      onChange={(e) => setEditTitle(e.target.value)}
-                    />
-                  ) : (
-                    <div className="title">{todo.title}</div>
-                  )}
+                  <div>
+                    {selected === todo.key ? (
+                      <input
+                        value={editTitle}
+                        onChange={(e) => setEditTitle(e.target.value)}
+                      />
+                    ) : (
+                      <div className="title">{todo.title}</div>
+                    )}
+                  </div>
 
                   <div className="icons">
                     {selected === todo.key ? (
-                      <FaCheck onClick={handleDoneEdit} />
+                      <FaCheck onClick={() => handleDoneEdit(todo.key)} />
                     ) : (
                       <MdOutlineEdit onClick={() => handleEdit(todo.key)} />
                     )}

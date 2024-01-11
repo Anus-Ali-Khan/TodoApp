@@ -46,8 +46,8 @@
 
 .todolist {
     margin-top: 2rem;
-    font-size: 1.1rem;
-    width: 25%;
+    font-size: 1.3rem;
+    width: 30%;
 }
 
 .addtodo {
@@ -62,16 +62,39 @@
 .dlt-container {
     display: flex;
     align-items: center;
-    gap: 9rem;
+    justify-content: space-between;
+    width: 100%;
 
 }
 
 .icons {
     display: flex;
     gap: 1rem;
+
 }
 
-.title {
 
-    width: 8rem;
+/* Media Query */
+
+@media only screen and (max-width: 320px) {
+    .App .input {
+        width: 60%;
+    }
+
+    .App .btn {
+        width: 40%;
+    }
+
+    .todolist {
+        width: 70%;
+        font-size: 0.8rem;
+    }
+
+}
+
+@media only screen and (min-width: 760px) {
+    .todolist {
+        width: 30%;
+        font-size: 1rem;
+    }
 }

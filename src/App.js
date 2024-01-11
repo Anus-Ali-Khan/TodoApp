@@ -4,6 +4,7 @@ import Addtodo from "./components/Addtodo";
 import { MdDeleteOutline } from "react-icons/md";
 import { MdOutlineEdit } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
+import { MdOutlineCancel } from "react-icons/md";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -69,9 +70,12 @@ function App() {
         return todo;
       }
     });
-
     setTodos(doneEdit);
     localStorage.setItem("todos", JSON.stringify(doneEdit));
+    setSelected("");
+  };
+
+  const handleCancelEdit = (key) => {
     setSelected("");
   };
 
@@ -109,7 +113,13 @@ function App() {
 
                   <div className="icons">
                     {selected === todo.key ? (
-                      <FaCheck onClick={() => handleDoneEdit(todo.key)} />
+                      <div className="edit-btns">
+                        <FaCheck onClick={() => handleDoneEdit(todo.key)} />
+
+                        <MdOutlineCancel
+                          onClick={() => handleCancelEdit(todo.key)}
+                        />
+                      </div>
                     ) : (
                       <MdOutlineEdit onClick={() => handleEdit(todo.key)} />
                     )}
